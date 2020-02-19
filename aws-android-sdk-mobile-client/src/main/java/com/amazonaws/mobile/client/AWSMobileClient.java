@@ -1321,7 +1321,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     @AnyThread
     public void confirmSignIn(final Map<String, String> signInChallengeResponse,
                               final Callback<SignInResult> callback) {
-        confirmSignIn(signInChallengeResponse, null, callback);
+        confirmSignIn(signInChallengeResponse, new HashMap<String, String>(), callback);
     }
 
     /**
