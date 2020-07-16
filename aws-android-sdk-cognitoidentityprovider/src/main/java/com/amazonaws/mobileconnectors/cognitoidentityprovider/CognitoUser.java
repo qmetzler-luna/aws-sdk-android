@@ -21,6 +21,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.amazonaws.logging.Log;
+import com.amazonaws.logging.LogFactory;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
@@ -100,9 +102,6 @@ import com.amazonaws.services.cognitoidentityprovider.model.VerifyUserAttributeR
 import com.amazonaws.services.cognitoidentityprovider.model.VerifyUserAttributeResult;
 import com.amazonaws.util.Base64;
 import com.amazonaws.util.StringUtils;
-
-import com.amazonaws.logging.Log;
-import com.amazonaws.logging.LogFactory;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -199,18 +198,18 @@ public class CognitoUser {
      * Constructs a new Cognito User from a Cognito user identity pool
      * {@link CognitoUserPool} and userId.
      *
-     * @param pool REQUIRED: Reference to {@link CognitoUserPool}, to which this
-     *            user belongs.
-     * @param userId REQUIRED: userId of this user.
-     * @param clientId REQUIRED: Client-Id of the android app.
+     * @param pool         REQUIRED: Reference to {@link CognitoUserPool}, to which this
+     *                     user belongs.
+     * @param userId       REQUIRED: userId of this user.
+     * @param clientId     REQUIRED: Client-Id of the android app.
      * @param clientSecret REQUIRED: Client secret assigned for this Client-Id.
-     * @param secretHash REQUIRED: Secret-Hash, calculated for this android app.
-     * @param client REQUIRED: Low level android client.
-     * @param context REQUIRED: Application context.
+     * @param secretHash   REQUIRED: Secret-Hash, calculated for this android app.
+     * @param client       REQUIRED: Low level android client.
+     * @param context      REQUIRED: Application context.
      */
     protected CognitoUser(CognitoUserPool pool, String userId,
-            String clientId, String clientSecret, String secretHash,
-            AmazonCognitoIdentityProvider client, Context context) {
+                          String clientId, String clientSecret, String secretHash,
+                          AmazonCognitoIdentityProvider client, Context context) {
         this.pool = pool;
         this.context = context;
         this.userId = userId;
@@ -257,17 +256,17 @@ public class CognitoUser {
      * confirmation.
      * </p>
      *
-     * @param confirmationCode REQUIRED: Code sent to the phone-number or email
-     *            used to register the user.
+     * @param confirmationCode    REQUIRED: Code sent to the phone-number or email
+     *                            used to register the user.
      * @param forcedAliasCreation REQUIRED: This flag indicates if the
-     *            confirmation should go-through in case of parameter
-     *            contentions.
-     * @param callback REQUIRED: This is a reference to {@link GenericHandler}
-     *            callback handler.
+     *                            confirmation should go-through in case of parameter
+     *                            contentions.
+     * @param callback            REQUIRED: This is a reference to {@link GenericHandler}
+     *                            callback handler.
      */
     public void confirmSignUpInBackground(final String confirmationCode,
-            final boolean forcedAliasCreation,
-            final GenericHandler callback) {
+                                          final boolean forcedAliasCreation,
+                                          final GenericHandler callback) {
         confirmSignUpInBackground(confirmationCode, forcedAliasCreation,
                 Collections.<String, String>emptyMap(), callback);
     }
@@ -282,17 +281,17 @@ public class CognitoUser {
      * throw NetworkOnMainThreadException.
      * </p>
      *
-     * @param confirmationCode REQUIRED: Code sent to the phone-number or email
-     *            used to register the user
+     * @param confirmationCode    REQUIRED: Code sent to the phone-number or email
+     *                            used to register the user
      * @param forcedAliasCreation REQUIRED: This flag indicates if the
-     *            confirmation should go-through in case of parameter
-     *            contentions.
-     * @param callback REQUIRED: This is a reference to {@link GenericHandler}
-     *            callback handler
+     *                            confirmation should go-through in case of parameter
+     *                            contentions.
+     * @param callback            REQUIRED: This is a reference to {@link GenericHandler}
+     *                            callback handler
      */
     public void confirmSignUp(String confirmationCode,
-            boolean forcedAliasCreation,
-            GenericHandler callback) {
+                              boolean forcedAliasCreation,
+                              GenericHandler callback) {
         confirmSignUp(confirmationCode, forcedAliasCreation, Collections.<String, String>emptyMap(), callback);
     }
 
@@ -304,15 +303,15 @@ public class CognitoUser {
      * confirmation.
      * </p>
      *
-     * @param confirmationCode REQUIRED: Code sent to the phone-number or email
-     *            used to register the user.
+     * @param confirmationCode    REQUIRED: Code sent to the phone-number or email
+     *                            used to register the user.
      * @param forcedAliasCreation REQUIRED: This flag indicates if the
-     *            confirmation should go-through in case of parameter
-     *            contentions.
-     * @param clientMetadata A map of custom key-value pairs that is passed to the lambda function for
-     *                       custom workflow.
-     * @param callback REQUIRED: This is a reference to {@link GenericHandler}
-     *            callback handler.
+     *                            confirmation should go-through in case of parameter
+     *                            contentions.
+     * @param clientMetadata      A map of custom key-value pairs that is passed to the lambda function for
+     *                            custom workflow.
+     * @param callback            REQUIRED: This is a reference to {@link GenericHandler}
+     *                            callback handler.
      */
     public void confirmSignUpInBackground(final String confirmationCode,
                                           final boolean forcedAliasCreation,
@@ -357,15 +356,15 @@ public class CognitoUser {
      * throw NetworkOnMainThreadException.
      * </p>
      *
-     * @param confirmationCode REQUIRED: Code sent to the phone-number or email
-     *            used to register the user
+     * @param confirmationCode    REQUIRED: Code sent to the phone-number or email
+     *                            used to register the user
      * @param forcedAliasCreation REQUIRED: This flag indicates if the
-     *            confirmation should go-through in case of parameter
-     *            contentions.
-     * @param clientMetadata A map of custom key-value pairs that is passed to the lambda function for
-     *                       custom workflow.
-     * @param callback REQUIRED: This is a reference to {@link GenericHandler}
-     *            callback handler
+     *                            confirmation should go-through in case of parameter
+     *                            contentions.
+     * @param clientMetadata      A map of custom key-value pairs that is passed to the lambda function for
+     *                            custom workflow.
+     * @param callback            REQUIRED: This is a reference to {@link GenericHandler}
+     *                            callback handler
      */
     public void confirmSignUp(String confirmationCode,
                               boolean forcedAliasCreation,
@@ -385,11 +384,11 @@ public class CognitoUser {
     /**
      * Internal method to Confirm Registration.
      *
-     * @param confirmationCode REQUIRED: Code to confirm this user.
+     * @param confirmationCode    REQUIRED: Code to confirm this user.
      * @param forcedAliasCreation REQUIRED: If set over-rides parameter
-     *            contentions
-     * @param clientMetadata A map of custom key-value pairs that is passed to the lambda function for
-     *                       custom workflow.
+     *                            contentions
+     * @param clientMetadata      A map of custom key-value pairs that is passed to the lambda function for
+     *                            custom workflow.
      */
     private void confirmSignUpInternal(final String confirmationCode,
                                        final boolean forcedAliasCreation,
@@ -551,7 +550,7 @@ public class CognitoUser {
      *
      * @param clientMetadata A map of custom key-value pairs that is passed to the lambda function for
      *                       lambda functions triggered by forgot password.
-     * @param callback REQUIRED: {@link ForgotPasswordHandler} callback
+     * @param callback       REQUIRED: {@link ForgotPasswordHandler} callback
      */
     public void forgotPasswordInBackground(final Map<String, String> clientMetadata,
                                            final ForgotPasswordHandler callback) {
@@ -611,7 +610,7 @@ public class CognitoUser {
      *
      * @param clientMetadata A map of custom key-value pairs that is passed to the lambda function for
      *                       lambda functions triggered by forgot password.
-     * @param callback REQUIRED: {@link ForgotPasswordHandler} callback
+     * @param callback       REQUIRED: {@link ForgotPasswordHandler} callback
      */
     public void forgotPassword(final Map<String, String> clientMetadata,
                                final ForgotPasswordHandler callback) {
@@ -663,11 +662,11 @@ public class CognitoUser {
      * </p>
      *
      * @param verificationCode REQUIRED: Code sent from Cognito Identity
-     *            Provider Service.
-     * @param newPassword REQUIRED: New password. On successful verification of
-     *            {@code verificationCode}, this will be the new password for
-     *            this user.
-     * @param callback REQUIRED: {@link ForgotPasswordHandler} callback.
+     *                         Provider Service.
+     * @param newPassword      REQUIRED: New password. On successful verification of
+     *                         {@code verificationCode}, this will be the new password for
+     *                         this user.
+     * @param callback         REQUIRED: {@link ForgotPasswordHandler} callback.
      */
     public void confirmPasswordInBackground(final String verificationCode,
                                             final String newPassword,
@@ -684,18 +683,18 @@ public class CognitoUser {
      * </p>
      *
      * @param verificationCode REQUIRED: Code sent from Cognito Identity
-     *            Provider Service.
-     * @param newPassword REQUIRED: New password. On successful verification of
-     *            {@code verificationCode}, this will be the new password for
-     *            this user.
-     * @param clientMetadata A map of custom key-value pairs that you can provide as input for any
-     *                       custom workflows triggered by confirm password.
-     * @param callback REQUIRED: {@link ForgotPasswordHandler} callback.
+     *                         Provider Service.
+     * @param newPassword      REQUIRED: New password. On successful verification of
+     *                         {@code verificationCode}, this will be the new password for
+     *                         this user.
+     * @param clientMetadata   A map of custom key-value pairs that you can provide as input for any
+     *                         custom workflows triggered by confirm password.
+     * @param callback         REQUIRED: {@link ForgotPasswordHandler} callback.
      */
     public void confirmPasswordInBackground(final String verificationCode,
-            final String newPassword,
-            final Map<String, String> clientMetadata,
-            final ForgotPasswordHandler callback) {
+                                            final String newPassword,
+                                            final Map<String, String> clientMetadata,
+                                            final ForgotPasswordHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -736,11 +735,11 @@ public class CognitoUser {
      * </p>
      *
      * @param verificationCode REQUIRED: Code sent from Cognito Identity
-     *            Provider Service.
-     * @param newPassword REQUIRED: New password. On successful verification of
-     *            {@code verificationCode}, this will be the new password for
-     *            this user.
-     * @param callback REQUIRED: {@link ForgotPasswordHandler} callback.
+     *                         Provider Service.
+     * @param newPassword      REQUIRED: New password. On successful verification of
+     *                         {@code verificationCode}, this will be the new password for
+     *                         this user.
+     * @param callback         REQUIRED: {@link ForgotPasswordHandler} callback.
      */
     public void confirmPassword(final String verificationCode,
                                 final String newPassword,
@@ -759,18 +758,18 @@ public class CognitoUser {
      * </p>
      *
      * @param verificationCode REQUIRED: Code sent from Cognito Identity
-     *            Provider Service.
-     * @param newPassword REQUIRED: New password. On successful verification of
-     *            {@code verificationCode}, this will be the new password for
-     *            this user.
-     * @param clientMetadata A map of custom key-value pairs that you can provide as input for any
-     *                       custom workflows triggered by confirm password.
-     * @param callback REQUIRED: {@link ForgotPasswordHandler} callback.
+     *                         Provider Service.
+     * @param newPassword      REQUIRED: New password. On successful verification of
+     *                         {@code verificationCode}, this will be the new password for
+     *                         this user.
+     * @param clientMetadata   A map of custom key-value pairs that you can provide as input for any
+     *                         custom workflows triggered by confirm password.
+     * @param callback         REQUIRED: {@link ForgotPasswordHandler} callback.
      */
     public void confirmPassword(final String verificationCode,
-            final String newPassword,
-            final Map<String, String> clientMetadata,
-            final ForgotPasswordHandler callback) {
+                                final String newPassword,
+                                final Map<String, String> clientMetadata,
+                                final ForgotPasswordHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -786,7 +785,7 @@ public class CognitoUser {
      * Internal method to set a new password.
      *
      * @param verificationCode REQUIRED: Verification code sent to the user.
-     * @param newPassword REQUIRED: New password for the user.
+     * @param newPassword      REQUIRED: New password for the user.
      */
     private void confirmPasswordInternal(final String verificationCode,
                                          final String newPassword,
@@ -813,33 +812,33 @@ public class CognitoUser {
      * getSession orchestrates the SignIn flow with Amazon Cognito UserPools.
      *
      * <p>
-     *     This method is asynchronous and performs network operations
-     *     on a background thread.
+     * This method is asynchronous and performs network operations
+     * on a background thread.
      * </p>
      *
      * <p>
-     *     1) Read the tokens (Id, Access and Refresh) that are cached on the device.
-     *      1.1) If the Id and Access tokens are present and they are valid, the
-     *          {@link AuthenticationHandler#onSuccess(CognitoUserSession, CognitoDevice)}.
-     *          will be called with a {@link CognitoUserSession} that has references to the valid tokens.
-     *          This means that the user is signed-in.
-     *      1.2) If the Id and Access tokens are expired, and if there is a valid refresh token,
-     *          a network call is made to get new Id and Access tokens.
-     *          If valid Id and Access tokens are retrieved, they are cached on the device
-     *          and {@link AuthenticationHandler#onSuccess(CognitoUserSession, CognitoDevice)}
-     *          will be called with a {@link CognitoUserSession} that has references to the valid
-     *          tokens. This means that the user is signed-in.
-     *
-     *     2) If there are no valid tokens cached on the device, the callback method
-     *          {@link AuthenticationHandler#getAuthenticationDetails(AuthenticationContinuation, String)}
-     *          will be called where the {@link AuthenticationDetails} will need to be supplied
-     *          to continue the SignIn operation. See
-     *          {@link com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.CognitoIdentityProviderContinuation}
-     *          for details on continuation objects.
-     *
-     *     3) In all other error scenarios, {@link AuthenticationHandler#onFailure(Exception)} will
-     *          be called with the type and message of the exception and it is the responsibility of
-     *          the caller to handle the exceptions appropriately.
+     * 1) Read the tokens (Id, Access and Refresh) that are cached on the device.
+     * 1.1) If the Id and Access tokens are present and they are valid, the
+     * {@link AuthenticationHandler#onSuccess(CognitoUserSession, CognitoDevice)}.
+     * will be called with a {@link CognitoUserSession} that has references to the valid tokens.
+     * This means that the user is signed-in.
+     * 1.2) If the Id and Access tokens are expired, and if there is a valid refresh token,
+     * a network call is made to get new Id and Access tokens.
+     * If valid Id and Access tokens are retrieved, they are cached on the device
+     * and {@link AuthenticationHandler#onSuccess(CognitoUserSession, CognitoDevice)}
+     * will be called with a {@link CognitoUserSession} that has references to the valid
+     * tokens. This means that the user is signed-in.
+     * <p>
+     * 2) If there are no valid tokens cached on the device, the callback method
+     * {@link AuthenticationHandler#getAuthenticationDetails(AuthenticationContinuation, String)}
+     * will be called where the {@link AuthenticationDetails} will need to be supplied
+     * to continue the SignIn operation. See
+     * {@link com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.CognitoIdentityProviderContinuation}
+     * for details on continuation objects.
+     * <p>
+     * 3) In all other error scenarios, {@link AuthenticationHandler#onFailure(Exception)} will
+     * be called with the type and message of the exception and it is the responsibility of
+     * the caller to handle the exceptions appropriately.
      * </p>
      *
      * @param callback REQUIRED: {@link AuthenticationHandler} callback
@@ -892,34 +891,34 @@ public class CognitoUser {
      * getSession orchestrates the SignIn flow with Amazon Cognito UserPools.
      *
      * <p>
-     *     This method is synchronous and performs network operations
-     *     on the same thread in which the method is called.  Calling this
-     *     method in the MainThread will result in {@link android.os.NetworkOnMainThreadException}
+     * This method is synchronous and performs network operations
+     * on the same thread in which the method is called.  Calling this
+     * method in the MainThread will result in {@link android.os.NetworkOnMainThreadException}
      * </p>
      *
      * <p>
-     *     1) Read the tokens (Id, Access and Refresh) that are cached on the device.
-     *      1.1) If the Id and Access tokens are present and they are valid, the
-     *          {@link AuthenticationHandler#onSuccess(CognitoUserSession, CognitoDevice)}.
-     *          will be called with a {@link CognitoUserSession} that has references to the valid tokens.
-     *          This means that the user is signed-in.
-     *      1.2) If the Id and Access tokens are expired, and if there is a valid refresh token,
-     *          a network call is made to get new Id and Access tokens.
-     *          If valid Id and Access tokens are retrieved, they are cached on the device
-     *          and {@link AuthenticationHandler#onSuccess(CognitoUserSession, CognitoDevice)}
-     *          will be called with a {@link CognitoUserSession} that has references to the valid
-     *          tokens. This means that the user is signed-in.
-     *
-     *     2) If there are no valid tokens cached on the device, the callback method
-     *          {@link AuthenticationHandler#getAuthenticationDetails(AuthenticationContinuation, String)}
-     *          will be called where the {@link AuthenticationDetails} will need to be supplied
-     *          to continue the SignIn operation. See
-     *          {@link com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.CognitoIdentityProviderContinuation}
-     *          for details on continuation objects.
-     *
-     *     3) In all other error scenarios, {@link AuthenticationHandler#onFailure(Exception)} will
-     *          be called with the type and message of the exception and it is the responsibility of
-     *          the caller to handle the exceptions appropriately.
+     * 1) Read the tokens (Id, Access and Refresh) that are cached on the device.
+     * 1.1) If the Id and Access tokens are present and they are valid, the
+     * {@link AuthenticationHandler#onSuccess(CognitoUserSession, CognitoDevice)}.
+     * will be called with a {@link CognitoUserSession} that has references to the valid tokens.
+     * This means that the user is signed-in.
+     * 1.2) If the Id and Access tokens are expired, and if there is a valid refresh token,
+     * a network call is made to get new Id and Access tokens.
+     * If valid Id and Access tokens are retrieved, they are cached on the device
+     * and {@link AuthenticationHandler#onSuccess(CognitoUserSession, CognitoDevice)}
+     * will be called with a {@link CognitoUserSession} that has references to the valid
+     * tokens. This means that the user is signed-in.
+     * <p>
+     * 2) If there are no valid tokens cached on the device, the callback method
+     * {@link AuthenticationHandler#getAuthenticationDetails(AuthenticationContinuation, String)}
+     * will be called where the {@link AuthenticationDetails} will need to be supplied
+     * to continue the SignIn operation. See
+     * {@link com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.CognitoIdentityProviderContinuation}
+     * for details on continuation objects.
+     * <p>
+     * 3) In all other error scenarios, {@link AuthenticationHandler#onFailure(Exception)} will
+     * be called with the type and message of the exception and it is the responsibility of
+     * the caller to handle the exceptions appropriately.
      * </p>
      *
      * @param callback REQUIRED: {@link AuthenticationHandler} callback
@@ -946,17 +945,17 @@ public class CognitoUser {
     /**
      * Note: Please use {@link #getSession(AuthenticationHandler)} or
      * {@link #getSessionInBackground(AuthenticationHandler)} instead.
-     *
+     * <p>
      * Initiates user authentication through the generic auth flow (also called
      * as Enhanced or Custom authentication). This is the first step in user
      * authentication. The response to this step from the service will contain
      * information about the next step in the authentication process.
      *
      * @param authenticationDetails REQUIRED: Contains details about the user
-     *            authentication.
-     * @param runInBackground flag indicating if the operation has to run in
-     *            background
-     * @param callback REQUIRED: {@link AuthenticationHandler} callback.
+     *                              authentication.
+     * @param runInBackground       flag indicating if the operation has to run in
+     *                              background
+     * @param callback              REQUIRED: {@link AuthenticationHandler} callback.
      * @return {@link Runnable} for the next step in user authentication.
      */
     public Runnable initiateUserAuthentication(final AuthenticationDetails authenticationDetails,
@@ -1052,15 +1051,15 @@ public class CognitoUser {
     }
 
     Runnable _initiateUserAuthentication(final AuthenticationDetails authenticationDetails,
-            final AuthenticationHandler callback, final boolean runInBackground) {
+                                         final AuthenticationHandler callback, final boolean runInBackground) {
         if (CognitoServiceConstants.CHLG_TYPE_USER_PASSWORD_VERIFIER.equals(
-                            authenticationDetails.getAuthenticationType())) {
+                authenticationDetails.getAuthenticationType())) {
             return startWithUserSrpAuth(authenticationDetails, callback, runInBackground);
         } else if (CognitoServiceConstants.CHLG_TYPE_CUSTOM_CHALLENGE.equals(
-                            authenticationDetails.getAuthenticationType())) {
+                authenticationDetails.getAuthenticationType())) {
             return startWithCustomAuth(authenticationDetails, callback, runInBackground);
         } else if (CognitoServiceConstants.CHLG_TYPE_USER_PASSWORD.equals(
-                            authenticationDetails.getAuthenticationType())) {
+                authenticationDetails.getAuthenticationType())) {
             return startWithUserPasswordAuth(authenticationDetails, callback, runInBackground);
         } else {
             return new Runnable() {
@@ -1079,17 +1078,17 @@ public class CognitoUser {
      * challenge and calls the internal method to respond to the authentication
      * challenge.
      *
-     * @param mfaCode REQUIRED: The MFA code received by the user.
-     * @param challenge REQUIRED: Current challenge
-     *            {@link RespondToAuthChallengeResult}.
+     * @param mfaCode         REQUIRED: The MFA code received by the user.
+     * @param challenge       REQUIRED: Current challenge
+     *                        {@link RespondToAuthChallengeResult}.
      * @param runInBackground flag indicating if the operation has to run in
-     *            background.
-     * @param callback REQUIRED: {@link AuthenticationHandler} callback.
+     *                        background.
+     * @param callback        REQUIRED: {@link AuthenticationHandler} callback.
      * @return {@link Runnable} for the next step in user authentication.
      */
     public Runnable respondToMfaChallenge(final String mfaCode,
-            final RespondToAuthChallengeResult challenge, final AuthenticationHandler callback,
-            final boolean runInBackground) {
+                                          final RespondToAuthChallengeResult challenge, final AuthenticationHandler callback,
+                                          final boolean runInBackground) {
         final RespondToAuthChallengeRequest challengeResponse = new RespondToAuthChallengeRequest();
         final Map<String, String> mfaParameters = new HashMap<String, String>();
         if (CognitoServiceConstants.CHLG_TYPE_SMS_MFA.equals(challenge.getChallengeName())) {
@@ -1112,7 +1111,7 @@ public class CognitoUser {
      * Call this method for valid, cached tokens for this user.
      *
      * @return Valid, cached tokens {@link CognitoUserSession}. {@code null}
-     *         otherwise.
+     * otherwise.
      */
     protected CognitoUserSession getCachedSession() {
         synchronized (GET_CACHED_SESSION_LOCK) {
@@ -1153,6 +1152,39 @@ public class CognitoUser {
     }
 
     /**
+     * Call this method for forcing a refresh of the session and getting a new token
+     *
+     * @return Valid, cached tokens {@link CognitoUserSession}. {@code null}
+     * otherwise.
+     */
+    public CognitoUserSession forceRefreshSession() {
+        synchronized (GET_CACHED_SESSION_LOCK) {
+            if (userId == null) {
+                throw new CognitoNotAuthorizedException("User-ID is null");
+            }
+
+            final CognitoUserSession cognitoUserSessionFromStore = readCachedTokens();
+
+            if (cognitoUserSessionFromStore.getRefreshToken() != null) {
+                try {
+                    cipSession = refreshSession(cognitoUserSessionFromStore);
+                    cacheTokens(cipSession);
+                    return cipSession;
+                } catch (final NotAuthorizedException nae) {
+                    clearCachedTokens();
+                    throw new CognitoNotAuthorizedException("User is not authenticated", nae);
+                } catch (final UserNotFoundException unfe) {
+                    clearCachedTokens();
+                    throw new CognitoNotAuthorizedException("User does not exist", unfe);
+                } catch (final Exception e) {
+                    throw new CognitoInternalErrorException("Failed to authenticate user", e);
+                }
+            }
+            throw new CognitoNotAuthorizedException("User is not authenticated");
+        }
+    }
+
+    /**
      * Request to change password for this user, in background.
      * <p>
      * This operation requires a valid accessToken
@@ -1162,11 +1194,11 @@ public class CognitoUser {
      *
      * @param oldUserPassword REQUIRED: Current password of this user.
      * @param newUserPassword REQUIRED: New password for this user.
-     * @param callback REQUIRED: {@link GenericHandler} callback handler.
+     * @param callback        REQUIRED: {@link GenericHandler} callback handler.
      */
     public void changePasswordInBackground(final String oldUserPassword,
-            final String newUserPassword,
-            final GenericHandler callback) {
+                                           final String newUserPassword,
+                                           final GenericHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -1212,11 +1244,11 @@ public class CognitoUser {
      *
      * @param oldUserPassword REQUIRED: Current password of this user.
      * @param newUserPassword REQUIRED: New password for this user.
-     * @param callback REQUIRED: {@link GenericHandler} callback handler.
+     * @param callback        REQUIRED: {@link GenericHandler} callback handler.
      */
     public void changePassword(final String oldUserPassword,
-            final String newUserPassword,
-            final GenericHandler callback) {
+                               final String newUserPassword,
+                               final GenericHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -1233,10 +1265,10 @@ public class CognitoUser {
      *
      * @param oldUserPassword REQUIRED: old password.
      * @param newUserPassword REQUIRED: new password.
-     * @param session REQUIRED: {@link CognitoUserSession}.
+     * @param session         REQUIRED: {@link CognitoUserSession}.
      */
     private void changePasswordInternal(String oldUserPassword, String newUserPassword,
-            CognitoUserSession session) {
+                                        CognitoUserSession session) {
         if (session != null && session.isValid()) {
             final ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
             changePasswordRequest.setPreviousPassword(oldUserPassword);
@@ -1348,11 +1380,11 @@ public class CognitoUser {
      * </p>
      *
      * @param attributeName REQUIRED: Name of the attribute that requires
-     *            verification.
-     * @param callback REQUIRED: callback.
+     *                      verification.
+     * @param callback      REQUIRED: callback.
      */
     public void getAttributeVerificationCodeInBackground(final String attributeName,
-            final VerificationHandler callback) {
+                                                         final VerificationHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -1404,8 +1436,8 @@ public class CognitoUser {
      * </p>
      *
      * @param attributeName REQUIRED: Name of the attribute that requires
-     *            verification.
-     * @param callback REQUIRED: callback.
+     *                      verification.
+     * @param callback      REQUIRED: callback.
      */
     public void getAttributeVerificationCode(String attributeName, VerificationHandler callback) {
         if (callback == null) {
@@ -1426,8 +1458,8 @@ public class CognitoUser {
      * Internal method to request for attribute verification code.
      *
      * @param attributeName REQUIRED: Name of the attribute that requires
-     *            verification.
-     * @param session REQUIRED: A valid {@link CognitoUserSession}.
+     *                      verification.
+     * @param session       REQUIRED: A valid {@link CognitoUserSession}.
      */
     private GetUserAttributeVerificationCodeResult getAttributeVerificationCodeInternal(
             final String attributeName,
@@ -1454,13 +1486,13 @@ public class CognitoUser {
      * .
      * </p>
      *
-     * @param attributeName REQUIRED: The attribute that is being verified.
+     * @param attributeName    REQUIRED: The attribute that is being verified.
      * @param verificationCode REQUIRED: The code for verification.
-     * @param callback REQUIRED: Callback
+     * @param callback         REQUIRED: Callback
      */
     public void verifyAttributeInBackground(final String attributeName,
-            final String verificationCode,
-            final GenericHandler callback) {
+                                            final String verificationCode,
+                                            final GenericHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -1504,13 +1536,13 @@ public class CognitoUser {
      * NetworkOnMainThreadException.
      * </p>
      *
-     * @param attributeName REQUIRED: The attribute that is being verified.
+     * @param attributeName    REQUIRED: The attribute that is being verified.
      * @param verificationCode REQUIRED: The code for verification.
-     * @param callback REQUIRED: Callback
+     * @param callback         REQUIRED: Callback
      */
     public void verifyAttribute(String attributeName,
-            String verificationCode,
-            GenericHandler callback) {
+                                String verificationCode,
+                                GenericHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -1527,14 +1559,14 @@ public class CognitoUser {
     /**
      * Internal method to verify an attribute.
      *
-     * @param attributeName REQUIRED: The attribute that is being verified.
+     * @param attributeName    REQUIRED: The attribute that is being verified.
      * @param verificationCode REQUIRED: The code for verification.
-     * @param session REQUIRED: A valid {@link CognitoUserSession}.
+     * @param session          REQUIRED: A valid {@link CognitoUserSession}.
      * @return {@link VerifyUserAttributeResult}
      */
     private VerifyUserAttributeResult verifyAttributeInternal(String attributeName,
-            String verificationCode,
-            CognitoUserSession session) {
+                                                              String verificationCode,
+                                                              CognitoUserSession session) {
         if (session != null && session.isValid()) {
             final VerifyUserAttributeRequest verifyUserAttributeRequest = new VerifyUserAttributeRequest();
             verifyUserAttributeRequest.setAttributeName(attributeName);
@@ -1549,8 +1581,9 @@ public class CognitoUser {
 
     /**
      * Registers an MFA based on Time-based One-time Password.
+     *
      * @param sessionToken Optional: If a session token has to be used to register the MFA.
-     * @param callback Required: Callback handler {@link VerifyMfaContinuation}.
+     * @param callback     Required: Callback handler {@link VerifyMfaContinuation}.
      */
     public void associateSoftwareTokenInBackground(final String sessionToken, final RegisterMfaHandler callback) {
         if (callback == null) {
@@ -1608,8 +1641,9 @@ public class CognitoUser {
 
     /**
      * Registers an MFA based on Time-based One-time Password, run on current thread.
+     *
      * @param sessionToken Optional: If a session token has to be used to register the MFA.
-     * @param callback Required: Callback handler {@link VerifyMfaContinuation}.
+     * @param callback     Required: Callback handler {@link VerifyMfaContinuation}.
      */
     public void associateSoftwareToken(final String sessionToken, final RegisterMfaHandler callback) {
         if (callback == null) {
@@ -1639,6 +1673,7 @@ public class CognitoUser {
 
     /**
      * Internal method to register a TOTP MFA with {@link CognitoUserSession}.
+     *
      * @param session Required: {@link CognitoUserSession}.
      * @return Response from the service.
      */
@@ -1655,6 +1690,7 @@ public class CognitoUser {
 
     /**
      * Internal method to register a TOTP MFA with session token.
+     *
      * @param sessionToken Required: The session token.
      * @return Response from the service.
      */
@@ -1671,6 +1707,7 @@ public class CognitoUser {
 
     /**
      * Makes service call to register the MFA.
+     *
      * @param request Required: {@link AssociateSoftwareTokenRequest}.
      * @return Response from the service.
      */
@@ -1680,10 +1717,11 @@ public class CognitoUser {
 
     /**
      * Verify the Time-based One-time Password based MFA tpo complete registration.
+     *
      * @param sessionToken Optional: If a session token has to be used to register the MFA.
-     * @param totpCode Required: The TOTP code.
+     * @param totpCode     Required: The TOTP code.
      * @param friendlyName Required: Friendly name to be associated with this MFA.
-     * @param callback Required: Callback handler {@link VerifyMfaContinuation}.
+     * @param callback     Required: Callback handler {@link VerifyMfaContinuation}.
      */
     public void verifySoftwareTokenInBackground(
             final String sessionToken, final String totpCode, final String friendlyName, final RegisterMfaHandler callback) {
@@ -1742,10 +1780,11 @@ public class CognitoUser {
 
     /**
      * Verify the Time-based One-time Password based MFA tpo complete registration, in current thread.
+     *
      * @param sessionToken Optional: If a session token has to be used to register the MFA.
-     * @param totpCode Required: The TOTP code.
+     * @param totpCode     Required: The TOTP code.
      * @param friendlyName Required: Friendly name to be associated with this MFA.
-     * @param callback Required: Callback handler {@link VerifyMfaContinuation}.
+     * @param callback     Required: Callback handler {@link VerifyMfaContinuation}.
      */
     public void verifySoftwareToken(
             final String sessionToken, final String totpCode, final String friendlyName, final RegisterMfaHandler callback) {
@@ -1780,8 +1819,9 @@ public class CognitoUser {
 
     /**
      * Internal method to verify TOTP MFA with {@link CognitoUserSession}.
-     * @param session Required: A valid {@link CognitoUserSession}.
-     * @param totpCode Required: The TOTP code.
+     *
+     * @param session      Required: A valid {@link CognitoUserSession}.
+     * @param totpCode     Required: The TOTP code.
      * @param friendlyName Required: Friendly name to be associated with this MFA.
      * @return Response from the service.
      */
@@ -1800,8 +1840,9 @@ public class CognitoUser {
 
     /**
      * Internal method to verify a TOTP MFA with session token.
-     * @param session Required: The session token.
-     * @param totpCode Required: The TOTP code.
+     *
+     * @param session      Required: The session token.
+     * @param totpCode     Required: The TOTP code.
      * @param friendlyName Required: Friendly name to be associated with this MFA.
      * @return Response from the service.
      */
@@ -1820,6 +1861,7 @@ public class CognitoUser {
 
     /**
      * Makes service call to verify the MFA.
+     *
      * @param request Required: {@link VerifySoftwareTokenRequest}.
      * @return Response from the service.
      */
@@ -1834,11 +1876,11 @@ public class CognitoUser {
      * </p>
      *
      * @param attributes REQUIRED: All attributes and values that need to be
-     *            updated for this user.
-     * @param callback REQUIRED: {@link UpdateAttributesHandler} callback.
+     *                   updated for this user.
+     * @param callback   REQUIRED: {@link UpdateAttributesHandler} callback.
      */
     public void updateAttributesInBackground(final CognitoUserAttributes attributes,
-            final UpdateAttributesHandler callback) {
+                                             final UpdateAttributesHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -1891,11 +1933,11 @@ public class CognitoUser {
      * </p>
      *
      * @param attributes REQUIRED: All attributes and values that need to be
-     *            updated for this user.
-     * @param callback REQUIRED: {@link UpdateAttributesHandler} callback.
+     *                   updated for this user.
+     * @param callback   REQUIRED: {@link UpdateAttributesHandler} callback.
      */
     public void updateAttributes(final CognitoUserAttributes attributes,
-            final UpdateAttributesHandler callback) {
+                                 final UpdateAttributesHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -1922,7 +1964,7 @@ public class CognitoUser {
      * Helper method to update user attributes.
      *
      * @param attributes REQUIRED: Attributes.
-     * @param session REQUIRED: A valid {@link CognitoUserSession}.
+     * @param session    REQUIRED: A valid {@link CognitoUserSession}.
      */
     private UpdateUserAttributesResult updateAttributesInternal(
             final CognitoUserAttributes attributes,
@@ -1942,11 +1984,11 @@ public class CognitoUser {
      * Deletes user attributes, in background.
      *
      * @param attributeNamesToDelete REQUIRED: List of user attributes that have
-     *            to be deleted.
-     * @param callback REQUIRED: {@link GenericHandler} callback
+     *                               to be deleted.
+     * @param callback               REQUIRED: {@link GenericHandler} callback
      */
     public void deleteAttributesInBackground(final List<String> attributeNamesToDelete,
-            final GenericHandler callback) {
+                                             final GenericHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -1988,11 +2030,11 @@ public class CognitoUser {
      * </p>
      *
      * @param attributeNamesToDelete REQUIRED: List of user attributes that have
-     *            to be deleted.
-     * @param callback REQUIRED: {@link GenericHandler} callback
+     *                               to be deleted.
+     * @param callback               REQUIRED: {@link GenericHandler} callback
      */
     public void deleteAttributes(final List<String> attributeNamesToDelete,
-            final GenericHandler callback) {
+                                 final GenericHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -2009,10 +2051,10 @@ public class CognitoUser {
      * Internal method to delete user attributes.
      *
      * @param attributeNamesToDelete REQUIRED: Attribute that is being deleted.
-     * @param session REQUIRED: A valid {@link CognitoUserSession}.
+     * @param session                REQUIRED: A valid {@link CognitoUserSession}.
      */
     private void deleteAttributesInternal(final List<String> attributeNamesToDelete,
-            final CognitoUserSession session) {
+                                          final CognitoUserSession session) {
 
         // Check if session is valid
         if (session == null) {
@@ -2220,11 +2262,11 @@ public class CognitoUser {
      * Set's user settings, in background.
      *
      * @param cognitoUserSettings REQUIRED: User settings as
-     *            {@link CognitoUserSettings}.
-     * @param callback REQUIRED: {@link GenericHandler} callback.
+     *                            {@link CognitoUserSettings}.
+     * @param callback            REQUIRED: {@link GenericHandler} callback.
      */
     public void setUserSettingsInBackground(final CognitoUserSettings cognitoUserSettings,
-            final GenericHandler callback) {
+                                            final GenericHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -2265,11 +2307,11 @@ public class CognitoUser {
      * </p>
      *
      * @param cognitoUserSettings REQUIRED: User settings as
-     *            {@link CognitoUserSettings}.
-     * @param callback REQUIRED: {@link GenericHandler} callback.
+     *                            {@link CognitoUserSettings}.
+     * @param callback            REQUIRED: {@link GenericHandler} callback.
      */
     public void setUserSettings(CognitoUserSettings cognitoUserSettings,
-            GenericHandler callback) {
+                                GenericHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -2285,11 +2327,11 @@ public class CognitoUser {
      * Internal method to set MFA delivery options.
      *
      * @param cognitoUserSettings REQUIRED: {@link CognitoUserAttributes}, with
-     *            MFA delivery options.
-     * @param session REQUIRED: A valid {@link CognitoUserSession}.
+     *                            MFA delivery options.
+     * @param session             REQUIRED: A valid {@link CognitoUserSession}.
      */
     private void setUserSettingsInternal(CognitoUserSettings cognitoUserSettings,
-            CognitoUserSession session) {
+                                         CognitoUserSession session) {
         if (session != null && session.isValid()) {
             if (cognitoUserSettings == null) {
                 throw new CognitoParameterInvalidException("user attributes is null");
@@ -2307,11 +2349,12 @@ public class CognitoUser {
 
     /**
      * Sets preferences for the registered MFA's of a user.
+     *
      * @param mfaSettings Required: A list with all MFA settings.
-     * @param callback Required: {@link GenericHandler} callback.
+     * @param callback    Required: {@link GenericHandler} callback.
      */
     public void setUserMfaSettingsInBackground(final List<CognitoMfaSettings> mfaSettings,
-                                            final GenericHandler callback) {
+                                               final GenericHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -2345,8 +2388,9 @@ public class CognitoUser {
 
     /**
      * Internal method to update MFA preferences.
+     *
      * @param mfaSettings Required: A list with all MFA settings.
-     * @param session Required: A valid {@link CognitoUserSession}.
+     * @param session     Required: A valid {@link CognitoUserSession}.
      */
     private void setUserMfaSettingsInternal(List<CognitoMfaSettings> mfaSettings, CognitoUserSession session) {
         if (session != null && session.isValid()) {
@@ -2355,7 +2399,7 @@ public class CognitoUser {
             }
             final SetUserMFAPreferenceRequest request = new SetUserMFAPreferenceRequest();
             request.setAccessToken(session.getAccessToken().getJWTToken());
-            for (CognitoMfaSettings mfaSetting: mfaSettings) {
+            for (CognitoMfaSettings mfaSetting : mfaSettings) {
                 if (CognitoMfaSettings.SMS_MFA.equals(mfaSetting.getMfaName())) {
                     final SMSMfaSettingsType smsMfaSetting = new SMSMfaSettingsType();
                     smsMfaSetting.setEnabled(mfaSetting.isEnabled());
@@ -2489,7 +2533,7 @@ public class CognitoUser {
      * Creates a user session with the tokens from authentication.
      *
      * @param authResult REQUIRED: Authentication result which contains the
-     *            tokens.
+     *                   tokens.
      * @return {@link CognitoUserSession} with the latest tokens.
      */
     private CognitoUserSession getCognitoUserSession(AuthenticationResultType authResult) {
@@ -2500,14 +2544,14 @@ public class CognitoUser {
      * Creates a user session with the tokens from authentication and overrider
      * the refresh token with the value passed.
      *
-     * @param authResult REQUIRED: Authentication result which contains the
-     *            tokens.
+     * @param authResult           REQUIRED: Authentication result which contains the
+     *                             tokens.
      * @param refreshTokenOverride REQUIRED: This will be used to create a new
-     *            session object if it is not null.
+     *                             session object if it is not null.
      * @return {@link CognitoUserSession} with the latest tokens.
      */
     private CognitoUserSession getCognitoUserSession(AuthenticationResultType authResult,
-            CognitoRefreshToken refreshTokenOverride) {
+                                                     CognitoRefreshToken refreshTokenOverride) {
         final String idtoken = authResult.getIdToken();
         final CognitoIdToken idToken = new CognitoIdToken(idtoken);
 
@@ -2553,14 +2597,14 @@ public class CognitoUser {
      * service cannot find a device-key.
      *
      * @param challengeResponse REQUIRED: {@link RespondToAuthChallengeRequest}
-     *            contains response for the current challenge.
-     * @param callback REQUIRED: {@link AuthenticationHandler} callback.
-     * @param runInBackground REQUIRED: Boolean to indicate the current
-     *            threading.
+     *                          contains response for the current challenge.
+     * @param callback          REQUIRED: {@link AuthenticationHandler} callback.
+     * @param runInBackground   REQUIRED: Boolean to indicate the current
+     *                          threading.
      * @return {@link Runnable} for the next step in user authentication.
      */
     public Runnable respondToChallenge(final RespondToAuthChallengeRequest challengeResponse,
-            final AuthenticationHandler callback, final boolean runInBackground) {
+                                       final AuthenticationHandler callback, final boolean runInBackground) {
         try {
             if (challengeResponse != null && challengeResponse.getChallengeResponses() != null) {
                 challengeResponse.getChallengeResponses()
@@ -2607,14 +2651,14 @@ public class CognitoUser {
      * device-key.
      *
      * @param authenticationDetails REQUIRED: {@link AuthenticationDetails}
-     *            contains user details for authentication.
-     * @param callback REQUIRED: {@link AuthenticationHandler} callback.
-     * @param runInBackground REQUIRED: Boolean to indicate the current
-     *            threading.
+     *                              contains user details for authentication.
+     * @param callback              REQUIRED: {@link AuthenticationHandler} callback.
+     * @param runInBackground       REQUIRED: Boolean to indicate the current
+     *                              threading.
      * @return {@link Runnable} for the next step in user authentication.
      */
     private Runnable startWithUserSrpAuth(final AuthenticationDetails authenticationDetails,
-            final AuthenticationHandler callback, final boolean runInBackground) {
+                                          final AuthenticationHandler callback, final boolean runInBackground) {
         return new Runnable() {
             @Override
             public void run() {
@@ -2667,14 +2711,14 @@ public class CognitoUser {
      * defined) flow.
      *
      * @param authenticationDetails REQUIRED: {@link AuthenticationDetails}
-     *            contains details about the custom authentication flow.
-     * @param callback REQUIRED: {@link AuthenticationHandler} callback.
-     * @param runInBackground REQUIRED: Boolean to indicate the current
-     *            threading.
+     *                              contains details about the custom authentication flow.
+     * @param callback              REQUIRED: {@link AuthenticationHandler} callback.
+     * @param runInBackground       REQUIRED: Boolean to indicate the current
+     *                              threading.
      * @return {@link Runnable} for the next step in user authentication.
      */
     private Runnable startWithCustomAuth(final AuthenticationDetails authenticationDetails,
-            final AuthenticationHandler callback, final boolean runInBackground) {
+                                         final AuthenticationHandler callback, final boolean runInBackground) {
         return new Runnable() {
             @Override
             public void run() {
@@ -2724,12 +2768,12 @@ public class CognitoUser {
      * a MultiFactorAuthenticationContinuation object is created. 4) Other
      * generic challenge, the challenge details are passed to the user.
      *
-     * @param challenge REQUIRED: Current challenge details,
-     *            {@link RespondToAuthChallengeResult}.
+     * @param challenge             REQUIRED: Current challenge details,
+     *                              {@link RespondToAuthChallengeResult}.
      * @param authenticationDetails OPTIONAL: This is used in the PASSWORD_VERIFIER challenge
-     * @param callback REQUIRED: {@link AuthenticationDetails} callback.
-     * @param runInBackground REQUIRED: Boolean to indicate the current
-     *            threading.
+     * @param callback              REQUIRED: {@link AuthenticationDetails} callback.
+     * @param runInBackground       REQUIRED: Boolean to indicate the current
+     *                              threading.
      * @return {@link Runnable} for the next step in user authentication.
      */
     private Runnable handleChallenge(final RespondToAuthChallengeResult challenge,
@@ -2859,11 +2903,11 @@ public class CognitoUser {
      * {@code handleChallenge(RespondToAuthChallengeResult challenge, final AuthenticationHandler callback)}
      * method.
      *
-     * @param authResult REQUIRED: Result from the {@code initiateAuth(...)}
-     *            method.
-     * @param callback REQUIRED: Callback for type {@link AuthenticationHandler}
+     * @param authResult      REQUIRED: Result from the {@code initiateAuth(...)}
+     *                        method.
+     * @param callback        REQUIRED: Callback for type {@link AuthenticationHandler}
      * @param runInBackground REQUIRED: Boolean to indicate the current
-     *            threading.
+     *                        threading.
      * @return {@link Runnable} for the next step in user authentication.
      */
     private Runnable handleChallenge(final InitiateAuthResult authResult,
@@ -2891,14 +2935,14 @@ public class CognitoUser {
      * This method performs user authentication with username and password without using SRP.
      *
      * @param authenticationDetails REQUIRED: {@link AuthenticationDetails}
-     *            contains details about the custom authentication flow.
-     * @param callback REQUIRED: {@link AuthenticationHandler} callback.
-     * @param runInBackground REQUIRED: Boolean to indicate the current
-     *            threading.
+     *                              contains details about the custom authentication flow.
+     * @param callback              REQUIRED: {@link AuthenticationHandler} callback.
+     * @param runInBackground       REQUIRED: Boolean to indicate the current
+     *                              threading.
      * @return {@link Runnable} for the next step in user authentication.
      */
     private Runnable startWithUserPasswordAuth(final AuthenticationDetails authenticationDetails,
-            final AuthenticationHandler callback, final boolean runInBackground) {
+                                               final AuthenticationHandler callback, final boolean runInBackground) {
         return new Runnable() {
             @Override
             public void run() {
@@ -2921,7 +2965,7 @@ public class CognitoUser {
      * Creates a authentication request to start authentication with user-password authentication (without SRP) flow.
      *
      * @param authenticationDetails REQUIRED: {@link AuthenticationDetails},
-     *            contains details required to start authentication flow.
+     *                              contains details required to start authentication flow.
      * @return {@link InitiateAuthRequest}, request to start the authentication.
      */
     private InitiateAuthRequest initiateUserPasswordAuthRequest(
@@ -2955,20 +2999,19 @@ public class CognitoUser {
     }
 
 
-
     /**
      * Performs device SRP authentication to identify remembered devices.
      * Restarts authentication if the device verification does not succeed.
      *
-     * @param challenge REQUIRED: {@link RespondToAuthChallengeResult}, contains
-     *            the current challenge.
-     * @param callback REQUIRED: {@link AuthenticationHandler} callback.
+     * @param challenge       REQUIRED: {@link RespondToAuthChallengeResult}, contains
+     *                        the current challenge.
+     * @param callback        REQUIRED: {@link AuthenticationHandler} callback.
      * @param runInBackground REQUIRED: Boolean to indicate the current
-     *            threading.
+     *                        threading.
      * @return {@link Runnable} for the next step in user authentication.
      */
     private Runnable deviceSrpAuthentication(final RespondToAuthChallengeResult challenge,
-            final AuthenticationHandler callback, final boolean runInBackground) {
+                                             final AuthenticationHandler callback, final boolean runInBackground) {
         final String deviceSecret = CognitoDeviceHelper.getDeviceSecret(usernameInternal,
                 pool.getUserPoolId(), context);
         final String deviceGroupKey = CognitoDeviceHelper.getDeviceGroupKey(usernameInternal,
@@ -3017,11 +3060,11 @@ public class CognitoUser {
      * verification.
      *
      * @param authenticationDetails REQUIRED: {@link AuthenticationDetails},
-     *            contains details for user SRP authentication.
-     * @param authenticationHelper REQUIRED: Internal helper class for SRP
-     *            calculations.
+     *                              contains details for user SRP authentication.
+     * @param authenticationHelper  REQUIRED: Internal helper class for SRP
+     *                              calculations.
      * @return {@link InitiateAuthRequest}, request to start with the user SRP
-     *         authentication.
+     * authentication.
      */
     private InitiateAuthRequest initiateUserSrpAuthRequest(
             AuthenticationDetails authenticationDetails,
@@ -3067,10 +3110,10 @@ public class CognitoUser {
      * authentication.
      *
      * @param authenticationDetails REQUIRED: {@link AuthenticationDetails},
-     *            contains details required to start a custom authentication
-     *            flow.
+     *                              contains details required to start a custom authentication
+     *                              flow.
      * @return {@link InitiateAuthRequest}, request to start with the user SRP
-     *         authentication.
+     * authentication.
      */
     private InitiateAuthRequest initiateCustomAuthRequest(final AuthenticationDetails authenticationDetails,
                                                           final AuthenticationHelper authenticationHelper) {
@@ -3084,7 +3127,7 @@ public class CognitoUser {
          */
         Map<String, String> authenticationParameters = authenticationDetails.getAuthenticationParameters();
         if (clientSecret != null &&
-            authenticationParameters.get(CognitoServiceConstants.AUTH_PARAM_SECRET_HASH) == null) {
+                authenticationParameters.get(CognitoServiceConstants.AUTH_PARAM_SECRET_HASH) == null) {
             secretHash = CognitoSecretHash.getSecretHash(authenticationDetails.getUserId(), clientId, clientSecret);
             authenticationParameters.put(CognitoServiceConstants.AUTH_PARAM_SECRET_HASH, secretHash);
         }
@@ -3109,10 +3152,10 @@ public class CognitoUser {
      * Creates a request to initiate device authentication.
      *
      * @param authenticationHelper REQUIRED: {@link AuthenticationDetails},
-     *            contains details required to start a custom authentication
-     *            flow.
+     *                             contains details required to start a custom authentication
+     *                             flow.
      * @return {@link RespondToAuthChallengeRequest}, request to start device
-     *         authentication.
+     * authentication.
      */
     private RespondToAuthChallengeRequest initiateDevicesAuthRequest(
             AuthenticationHelper authenticationHelper) {
@@ -3170,11 +3213,10 @@ public class CognitoUser {
     }
 
     /**
-     *
-     * @param challengeParameters returned by service
-     * @param password maintained locally
-     * @param challengeName returned by service
-     * @param session returned by service
+     * @param challengeParameters  returned by service
+     * @param password             maintained locally
+     * @param challengeName        returned by service
+     * @param session              returned by service
      * @param authenticationHelper
      * @return
      */
@@ -3255,12 +3297,12 @@ public class CognitoUser {
     /**
      * Creates request for device SRP verification.
      *
-     * @param challenge REQUIRED: {@link RespondToAuthChallengeResult} contains
-     *            next challenge.
-     * @param deviceSecret REQUIRED: Device secret verifier.
+     * @param challenge            REQUIRED: {@link RespondToAuthChallengeResult} contains
+     *                             next challenge.
+     * @param deviceSecret         REQUIRED: Device secret verifier.
      * @param authenticationHelper REQUIRED: Internal helper class for SRP
-     *            calculations.
-     * @param deviceGroupKey the device group key
+     *                             calculations.
+     * @param deviceGroupKey       the device group key
      * @return {@link RespondToAuthChallengeRequest}.
      */
     public RespondToAuthChallengeRequest deviceSrpAuthRequest(
@@ -3329,13 +3371,13 @@ public class CognitoUser {
     /**
      * Fetches the list of all remembered devices for this user.
      *
-     * @param limit REQUIRED: Maximum number of devices to be returned in this
-     *            call, defaults to 10.
+     * @param limit           REQUIRED: Maximum number of devices to be returned in this
+     *                        call, defaults to 10.
      * @param paginationToken REQUIRED: Token to continue an earlier search.
-     * @param callback REQUIRED: {@link DevicesHandler} callback.
+     * @param callback        REQUIRED: {@link DevicesHandler} callback.
      */
     public void listDevicesInBackground(final int limit, final String paginationToken,
-            final DevicesHandler callback) {
+                                        final DevicesHandler callback) {
         if (callback == null) {
             throw new CognitoParameterInvalidException("callback is null");
         }
@@ -3378,10 +3420,10 @@ public class CognitoUser {
      * Fetches the list of all remembered devices for this user, runs in current
      * thread.
      *
-     * @param limit REQUIRED: Maximum number of devices to be returned in this
-     *            call, defaults to 10.
+     * @param limit           REQUIRED: Maximum number of devices to be returned in this
+     *                        call, defaults to 10.
      * @param paginationToken REQUIRED: Token to continue an earlier search.
-     * @param callback REQUIRED: {@link DevicesHandler} callback.
+     * @param callback        REQUIRED: {@link DevicesHandler} callback.
      */
     public void listDevices(int limit, String paginationToken, DevicesHandler callback) {
         if (callback == null) {
@@ -3405,6 +3447,7 @@ public class CognitoUser {
      * Returns the current device, if users in this pool can remember devices.
      * If a deviceKey is not found with the userId, the deviceKey is searched
      * with the username in cached tokens, if any.
+     *
      * @return {@link CognitoDevice} if the device is available, null otherwise.
      */
     public CognitoDevice thisDevice() {
@@ -3465,14 +3508,14 @@ public class CognitoUser {
     /**
      * Internal method to fetch all devices trusted by this user.
      *
-     * @param session REQUIRED: A valid {@link CognitoUserSession}.
-     * @param limit REQUIRED: Maximum number of devices to fetch.
+     * @param session         REQUIRED: A valid {@link CognitoUserSession}.
+     * @param limit           REQUIRED: Maximum number of devices to fetch.
      * @param paginationToken REQUIRED: Token to continue with the previous
-     *            srearch.
+     *                        srearch.
      * @return {@link ListDevicesResult}, service response.
      */
     private ListDevicesResult listDevicesInternal(CognitoUserSession session, int limit,
-            String paginationToken) {
+                                                  String paginationToken) {
         if (session != null && session.isValid()) {
             final ListDevicesRequest listDevicesRequest = new ListDevicesRequest();
             if (limit < 1) {
@@ -3491,18 +3534,18 @@ public class CognitoUser {
     /**
      * Internal method to confirm a device.
      *
-     * @param session REQUIRED: A valid {@link CognitoUserSession}.
-     * @param deviceKey REQUIRED: This is the device-key assigned the new
-     *            device.
+     * @param session          REQUIRED: A valid {@link CognitoUserSession}.
+     * @param deviceKey        REQUIRED: This is the device-key assigned the new
+     *                         device.
      * @param passwordVerifier REQUIRED: Random string generated by the SDK.
-     * @param salt REQUIRED: Generated by the SDK to set the device verifier.
-     * @param deviceName REQUIRED: A user identifiable string assigned to the
-     *            device.
+     * @param salt             REQUIRED: Generated by the SDK to set the device verifier.
+     * @param deviceName       REQUIRED: A user identifiable string assigned to the
+     *                         device.
      * @return {@link ConfirmDeviceResult}, service response.
      */
     @SuppressWarnings("checkstyle:hiddenfield")
     private ConfirmDeviceResult confirmDeviceInternal(CognitoUserSession session, String deviceKey,
-            String passwordVerifier, String salt, String deviceName) {
+                                                      String passwordVerifier, String salt, String deviceName) {
         if (session != null && session.isValid()) {
             if (deviceKey != null && deviceName != null) {
                 final DeviceSecretVerifierConfigType deviceConfig = new DeviceSecretVerifierConfigType();
@@ -3550,6 +3593,7 @@ public class CognitoUser {
 
     /**
      * Fetches the encoded user context.
+     *
      * @return user context.
      */
     private UserContextDataType getUserContextData() {
@@ -3562,7 +3606,7 @@ public class CognitoUser {
     @SuppressWarnings({
             "checkstyle:parametername", "checkstyle:localvariablename", "checkstyle:membername",
             "checkstyle:staticvariablename"
-        })
+    })
     private static class AuthenticationHelper {
         private BigInteger a;
         private BigInteger A;
@@ -3641,9 +3685,9 @@ public class CognitoUser {
         }
 
         public byte[] getPasswordAuthenticationKey(String userId,
-                String userPassword,
-                BigInteger B,
-                BigInteger salt) {
+                                                   String userPassword,
+                                                   BigInteger B,
+                                                   BigInteger salt) {
             // Authenticate the password
             // u = H(A, B)
             final MessageDigest messageDigest = THREAD_MESSAGE_DIGEST.get();

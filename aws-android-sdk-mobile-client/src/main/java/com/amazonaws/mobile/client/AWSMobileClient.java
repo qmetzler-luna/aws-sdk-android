@@ -137,10 +137,10 @@ import static com.amazonaws.mobile.client.results.SignInState.CUSTOM_CHALLENGE;
  * authentication actions, a simple “drop-in auth” UI for performing common tasks, automatic
  * token and credentials management, and state tracking with notifications for performing
  * workflows in your application when users have authenticated.
- *
+ * <p>
  * The following demonstrates a simple sample usage inside of MainActivity.java onCreate method.
-     * <pre>
-     * AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback&lt;UserStateDetails&gt;() {
+ * <pre>
+ * AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback&lt;UserStateDetails&gt;() {
  *     public void onResult(UserStateDetails userStateDetails) {
  *         switch (userStateDetails.getUserState()) {
  *             case SIGNED_IN:
@@ -391,6 +391,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Returns AWSCredentials obtained from Cognito Identity
+     *
      * @return AWSCredentials obtained from Cognito Identity
      * @throws Exception
      */
@@ -586,7 +587,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
                     if (cognitoIdentity == null && userpool == null) {
                         callback.onError(new RuntimeException(
                                 "Neither Cognito Identity or Cognito UserPool was used." +
-                                " At least one must be present to use AWSMobileClient."));
+                                        " At least one must be present to use AWSMobileClient."));
                         return;
                     }
 
@@ -785,6 +786,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Returns the signed-in user's username obtained from the access token.
+     *
      * @return signed-in user's username
      */
     @AnyThread
@@ -841,6 +843,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * {@link #releaseSignInWait()} or any form of sign-in can be called
      * to prevent blocking {@link #getCredentials()}, {@link #getTokens()}, or other methods
      * requiring a sign-in.
+     *
      * @param listener
      */
     @AnyThread
@@ -853,6 +856,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     /**
      * Removes a listener. This will hold onto references.
      * Remove when a lifecycle ends to prevent memory leaks.
+     *
      * @param listener
      * @return true if removed
      */
@@ -899,8 +903,9 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * This method checks the current state of the user.
      * If the user's session is determined to be expired, then the {@link UserStateListener} will be
      * notified with @{@link UserState#SIGNED_OUT_USER_POOLS_TOKENS_INVALID} or
-     * @{link UserState#SIGNED_OUT_FEDERATED_TOKENS_INVALID}.
+     *
      * @return true if user is signed-in, false otherwise
+     * @{link UserState#SIGNED_OUT_FEDERATED_TOKENS_INVALID}.
      */
     protected boolean waitForSignIn() {
         UserStateDetails userStateDetails = null;
@@ -920,7 +925,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
                 case SIGNED_OUT_USER_POOLS_TOKENS_INVALID:
                 case SIGNED_OUT_FEDERATED_TOKENS_INVALID:
                     if (userStateDetails.getException() == null
-                    || isSignedOutRelatedException(userStateDetails.getException())) {
+                            || isSignedOutRelatedException(userStateDetails.getException())) {
                         // The service has returned an exception that indicates the user is not authorized
                         // Ask for another sign-in
                         setUserState(userStateDetails);
@@ -1174,7 +1179,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
                             Log.d(TAG, "Sending password.");
                             try {
                                 if (awsConfiguration.optJsonObject("Auth") != null && awsConfiguration.optJsonObject("Auth").has("authenticationFlowType") && awsConfiguration.optJsonObject("Auth").getString("authenticationFlowType").equals("CUSTOM_AUTH")) {
-                                    final HashMap<String, String> authParameters = new HashMap<String,String>();
+                                    final HashMap<String, String> authParameters = new HashMap<String, String>();
                                     authenticationContinuation.setAuthenticationDetails(new AuthenticationDetails(username, password, authParameters, validationData));
                                 } else {
                                     authenticationContinuation.setAuthenticationDetails(new AuthenticationDetails(username, password, validationData));
@@ -1290,8 +1295,8 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Call with the user's response to the sign-in challenge.
      *
      * @param signInChallengeResponse obtained from user
-     * @param clientMetaData Meta data for lambda triggers
-     * @param callback callback
+     * @param clientMetaData          Meta data for lambda triggers
+     * @param callback                callback
      */
     @AnyThread
     public void confirmSignIn(final Map<String, String> signInChallengeResponse,
@@ -1307,7 +1312,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Call with the user's response to the sign-in challenge.
      *
      * @param signInChallengeResponse obtained from user
-     * @param clientMetaData Meta data for lambda triggers
+     * @param clientMetaData          Meta data for lambda triggers
      * @return the result containing next steps or done.
      * @throws Exception
      */
@@ -1324,7 +1329,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Call with the user's response to the sign-in challenge.
      *
      * @param signInChallengeResponse obtained from user
-     * @param callback callback
+     * @param callback                callback
      */
     @AnyThread
     public void confirmSignIn(final Map<String, String> signInChallengeResponse,
@@ -1439,6 +1444,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      *                  .build();
      * }
      * </pre>
+     *
      * @param signOutOptions options
      */
     @WorkerThread
@@ -1455,6 +1461,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      *                  .build();
      * }
      * </pre>
+     *
      * @param signOutOptions options
      */
     @AnyThread
@@ -1579,8 +1586,8 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      */
     @WorkerThread
     public UserStateDetails federatedSignIn(final String providerKey,
-                                final String token,
-                                final FederatedSignInOptions options) throws Exception {
+                                            final String token,
+                                            final FederatedSignInOptions options) throws Exception {
         InternalCallback<UserStateDetails> internalCallback = new InternalCallback<UserStateDetails>();
         return internalCallback.await(_federatedSignIn(providerKey, token, options, internalCallback, true));
     }
@@ -1696,6 +1703,13 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
                 mFederatedLoginsMap = cognitoIdentity.getLogins();
             }
         }
+    }
+
+    /**
+     * Force the token to be refreshed after a change of IAM roles
+     */
+    public void forceRefreshToken() {
+        userpool.getCurrentUser().forceRefreshSession();
     }
 
     /**
@@ -1838,13 +1852,13 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Call {@link #confirmSignUp(String, String, Callback)} with the necessary next
      * step code obtained from user.
      *
-     * @param username username/email address/handle
-     * @param password user's password
+     * @param username       username/email address/handle
+     * @param password       user's password
      * @param userAttributes attributes associated with user
      * @param validationData optional, set of data to validate the sign-up request
      * @param clientMetadata meta data to be passed to the lambdas invoked by sign up operation.
-     * @param callback callback will be invoked to notify the success or failure of the
-     *                 SignUp operation
+     * @param callback       callback will be invoked to notify the success or failure of the
+     *                       SignUp operation
      */
     @AnyThread
     public void signUp(final String username,
@@ -1863,8 +1877,8 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Sign-up users. The {@link SignUpResult} will contain next steps if necessary.
      * Call {@link #confirmSignUp(String, String)} with the necessary next step code obtained from user.
      *
-     * @param username username/email address/handle
-     * @param password user's password
+     * @param username       username/email address/handle
+     * @param password       user's password
      * @param userAttributes attributes associated with user
      * @param validationData optional, set of data to validate the sign-up request
      * @param clientMetadata meta data to be passed to the lambdas invoked by sign up operation.
@@ -1888,12 +1902,12 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Call {@link #confirmSignUp(String, String, Callback)} with the necessary next
      * step code obtained from user.
      *
-     * @param username username/email address/handle
-     * @param password user's password
+     * @param username       username/email address/handle
+     * @param password       user's password
      * @param userAttributes attributes associated with user
      * @param validationData optional, set of data to validate the sign-up request
-     * @param callback callback will be invoked to notify the success or failure of the
-     *                 SignUp operation
+     * @param callback       callback will be invoked to notify the success or failure of the
+     *                       SignUp operation
      */
     @AnyThread
     public void signUp(final String username,
@@ -1911,8 +1925,8 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Sign-up users. The {@link SignUpResult} will contain next steps if necessary.
      * Call {@link #confirmSignUp(String, String)} with the necessary next step code obtained from user.
      *
-     * @param username username/email address/handle
-     * @param password user's password
+     * @param username       username/email address/handle
+     * @param password       user's password
      * @param userAttributes attributes associated with user
      * @param validationData optional, set of data to validate the sign-up request
      * @return result of the operation, potentially with next steps
@@ -1968,8 +1982,8 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
                                     signUpResult.getCodeDeliveryDetails().getDeliveryMedium(),
                                     signUpResult.getCodeDeliveryDetails().getAttributeName());
                             callback.onResult(new SignUpResult(signUpResult.getUserConfirmed(),
-                                            userCodeDeliveryDetails,
-                                            signUpResult.getUserSub()));
+                                    userCodeDeliveryDetails,
+                                    signUpResult.getUserSub()));
                         }
                     }
 
@@ -1985,11 +1999,11 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     /**
      * Confirm the sign-up request with follow-up information
      *
-     * @param username username/email address/handle of the user who is signing up
+     * @param username                username/email address/handle of the user who is signing up
      * @param signUpChallengeResponse response to the signUp challenge posted
-     * @param clientMetadata meta data to be passed to the lambdas invoked by confirm sign up operation.
-     * @param callback the callback will be invoked to notify the success or
-     *                 failure of the confirmSignUp operation
+     * @param clientMetadata          meta data to be passed to the lambdas invoked by confirm sign up operation.
+     * @param callback                the callback will be invoked to notify the success or
+     *                                failure of the confirmSignUp operation
      */
     @AnyThread
     public void confirmSignUp(final String username,
@@ -2005,9 +2019,9 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     /**
      * Confirm the sign-up request with follow-up information
      *
-     * @param username username of the user who is signing up
+     * @param username                username of the user who is signing up
      * @param signUpChallengeResponse response to the signUp challenge posted
-     * @param clientMetadata meta data to be passed to the lambdas invoked by confirm sign up operation.
+     * @param clientMetadata          meta data to be passed to the lambdas invoked by confirm sign up operation.
      */
     @WorkerThread
     public SignUpResult confirmSignUp(final String username,
@@ -2022,10 +2036,10 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     /**
      * Confirm the sign-up request with follow-up information
      *
-     * @param username username/email address/handle of the user who is signing up
+     * @param username                username/email address/handle of the user who is signing up
      * @param signUpChallengeResponse response to the signUp challenge posted
-     * @param callback the callback will be invoked to notify the success or
-     *                 failure of the confirmSignUp operation
+     * @param callback                the callback will be invoked to notify the success or
+     *                                failure of the confirmSignUp operation
      */
     @AnyThread
     public void confirmSignUp(final String username,
@@ -2040,7 +2054,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     /**
      * Confirm the sign-up request with follow-up information
      *
-     * @param username username of the user who is signing up
+     * @param username                username of the user who is signing up
      * @param signUpChallengeResponse response to the signUp challenge posted
      */
     @WorkerThread
@@ -2062,21 +2076,21 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
             public void run() {
                 userpool.getUser(username).confirmSignUp(signUpChallengeResponse,
                         false, clientMetadata, new GenericHandler() {
-                    @Override
-                    public void onSuccess() {
-                        callback.onResult(new SignUpResult(
-                                true,
-                                null,
-                                null
-                        ));
-                        signUpUser = null;
-                    }
+                            @Override
+                            public void onSuccess() {
+                                callback.onResult(new SignUpResult(
+                                        true,
+                                        null,
+                                        null
+                                ));
+                                signUpUser = null;
+                            }
 
-                    @Override
-                    public void onFailure(Exception exception) {
-                        callback.onError(exception);
-                    }
-                });
+                            @Override
+                            public void onFailure(Exception exception) {
+                                callback.onError(exception);
+                            }
+                        });
             }
         };
     }
@@ -2141,10 +2155,10 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     /**
      * Used to reset password if user forgot the old password.
      *
-     * @param username username of the user trying to reset password.
+     * @param username       username of the user trying to reset password.
      * @param clientMetadata meta data to be passed to the lambdas invoked by confirm sign up operation.
-     * @param callback callback will be invoked to notify the success or failure of the
-     *                 forgot password operation
+     * @param callback       callback will be invoked to notify the success or failure of the
+     *                       forgot password operation
      */
     @AnyThread
     public void forgotPassword(final String username,
@@ -2237,11 +2251,11 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Second method to call after {@link #forgotPassword(String)} to respond to any challenges
      * that the service may request.
      *
-     * @param password new password
+     * @param password                        new password
      * @param forgotPasswordChallengeResponse response to the forgot password challenge posted
-     * @param clientMetadata metadata to be passed to the lambda invoked by this operation.
-     * @param callback callback will be invoked to notify the success or failure of the
-     *                 confirm forgot password operation
+     * @param clientMetadata                  metadata to be passed to the lambda invoked by this operation.
+     * @param callback                        callback will be invoked to notify the success or failure of the
+     *                                        confirm forgot password operation
      */
     @AnyThread
     public void confirmForgotPassword(final String password,
@@ -2257,8 +2271,8 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Second method to call after {@link #forgotPassword(String)} to respond to any challenges
      * that the service may request.
      *
-     * @param password new password.
-     * @param clientMetadata metadata to be passed to the lambda invoked by this operation.
+     * @param password                        new password.
+     * @param clientMetadata                  metadata to be passed to the lambda invoked by this operation.
      * @param forgotPasswordChallengeResponse response to the forgot password challenge posted.
      */
     @WorkerThread
@@ -2274,10 +2288,10 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Second method to call after {@link #forgotPassword(String)} to respond to any challenges
      * that the service may request.
      *
-     * @param password new password.
+     * @param password                        new password.
      * @param forgotPasswordChallengeResponse response to the forgot password challenge posted.
-     * @param callback callback will be invoked to notify the success or failure of the
-     *                 confirm forgot password operation
+     * @param callback                        callback will be invoked to notify the success or failure of the
+     *                                        confirm forgot password operation
      */
     @AnyThread
     public void confirmForgotPassword(final String password,
@@ -2293,7 +2307,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
      * Second method to call after {@link #forgotPassword(String)} to respond to any challenges
      * that the service may request.
      *
-     * @param password new password.
+     * @param password                        new password.
      * @param forgotPasswordChallengeResponse response to the forgot password challenge posted.
      */
     @WorkerThread
@@ -2410,8 +2424,9 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     /**
      * Sends a map of user attributes to update. If an attribute needs to
      * be verified, then the verification delivery information is returned.
+     *
      * @param userAttributes the attributes i.e. email
-     * @param callback verification delivery information
+     * @param callback       verification delivery information
      */
     @AnyThread
     public void updateUserAttributes(final Map<String, String> userAttributes,
@@ -2424,6 +2439,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     /**
      * Sends a map of user attributes to update. If an attribute needs to
      * be verified, then the verification delivery information is returned.
+     *
      * @param userAttributes the attributes i.e. email
      * @return verification delivery information
      * @throws Exception
@@ -2478,8 +2494,9 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Verify an attribute like email.
+     *
      * @param attributeName i.e. email
-     * @param callback verification delivery information
+     * @param callback      verification delivery information
      */
     @AnyThread
     public void verifyUserAttribute(final String attributeName,
@@ -2491,6 +2508,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Verify an attribute like email.
+     *
      * @param attributeName i.e. email
      * @return verification delivery information
      * @throws Exception
@@ -2537,14 +2555,15 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Confirm the attribute with the code provided by user.
-     * @param attributeName i.e. email
+     *
+     * @param attributeName                        i.e. email
      * @param updateUserAttributeChallengeResponse i.e. 123456
-     * @param callback callback
+     * @param callback                             callback
      */
     @AnyThread
     public void confirmUpdateUserAttribute(final String attributeName,
-                                     final String updateUserAttributeChallengeResponse,
-                                     final Callback<Void> callback) {
+                                           final String updateUserAttributeChallengeResponse,
+                                           final Callback<Void> callback) {
 
         InternalCallback internalCallback = new InternalCallback(callback);
         internalCallback.async(_confirmUserAttribute(attributeName, updateUserAttributeChallengeResponse, internalCallback));
@@ -2552,13 +2571,14 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Confirm the attribute with the code provided by user.
-     * @param attributeName i.e. email
+     *
+     * @param attributeName                        i.e. email
      * @param updateUserAttributeChallengeResponse i.e. 123456
      * @throws Exception
      */
     @WorkerThread
     public void confirmUpdateUserAttribute(final String attributeName,
-                                     final String updateUserAttributeChallengeResponse) throws Exception {
+                                           final String updateUserAttributeChallengeResponse) throws Exception {
 
         InternalCallback<Void> internalCallback = new InternalCallback();
         internalCallback.await(_confirmUserAttribute(attributeName, updateUserAttributeChallengeResponse, internalCallback));
@@ -2566,14 +2586,15 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Confirm the attribute with the code provided by user.
-     * @param attributeName i.e. email
+     *
+     * @param attributeName                        i.e. email
      * @param updateUserAttributeChallengeResponse i.e. 123456
-     * @param callback callback
+     * @param callback                             callback
      */
     @AnyThread
     public void confirmVerifyUserAttribute(final String attributeName,
-                                     final String updateUserAttributeChallengeResponse,
-                                     final Callback<Void> callback) {
+                                           final String updateUserAttributeChallengeResponse,
+                                           final Callback<Void> callback) {
 
         InternalCallback internalCallback = new InternalCallback(callback);
         internalCallback.async(_confirmUserAttribute(attributeName, updateUserAttributeChallengeResponse, internalCallback));
@@ -2581,13 +2602,14 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Confirm the attribute with the code provided by user.
-     * @param attributeName i.e. email
+     *
+     * @param attributeName                        i.e. email
      * @param updateUserAttributeChallengeResponse i.e. 123456
      * @throws Exception
      */
     @WorkerThread
     public void confirmVerifyUserAttribute(final String attributeName,
-                                     final String updateUserAttributeChallengeResponse) throws Exception {
+                                           final String updateUserAttributeChallengeResponse) throws Exception {
 
         InternalCallback<Void> internalCallback = new InternalCallback();
         internalCallback.await(_confirmUserAttribute(attributeName, updateUserAttributeChallengeResponse, internalCallback));
@@ -2803,8 +2825,9 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Shows a sign-in UI for user's to sign-in, sign-up, forgot password, create account
+     *
      * @param callingActivity The activity that the sign-in screen will be shown on top of.
-     * @param callback callback with UserStateDetails at end of operation
+     * @param callback        callback with UserStateDetails at end of operation
      */
     @AnyThread
     public void showSignIn(final Activity callingActivity,
@@ -2816,6 +2839,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Shows a sign-in UI for user's to sign-in, sign-up, forgot password, create account
+     *
      * @param callingActivity The activity that the sign-in screen will be shown on top of.
      */
     @WorkerThread
@@ -2824,11 +2848,13 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
         InternalCallback<UserStateDetails> internalCallback = new InternalCallback<UserStateDetails>();
         return internalCallback.await(_showSignIn(callingActivity, SignInUIOptions.builder().build(), internalCallback));
     }
+
     /**
      * Shows a sign-in UI for user's to sign-in, sign-up, forgot password, create account
+     *
      * @param callingActivity The activity that the sign-in screen will be shown on top of.
      * @param signInUIOptions Override any default configuration with your preferences.
-     * @param callback callback with UserStateDetails at end of operation
+     * @param callback        callback with UserStateDetails at end of operation
      */
     @AnyThread
     public void showSignIn(final Activity callingActivity,
@@ -2841,6 +2867,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
     /**
      * Shows a sign-in UI for user's to sign-in, sign-up, forgot password, create account
+     *
      * @param callingActivity The activity that the sign-in screen will be shown on top of.
      * @param signInUIOptions Override any default configuration with your preferences.
      */
@@ -2913,11 +2940,11 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
                 }
                 if (hostedUIOptions.getTokenQueryParameters() != null) {
                     try {
-                    JSONObject tokenParams = new JSONObject();
-                    for (Map.Entry<String, String> e : hostedUIOptions.getTokenQueryParameters().entrySet()) {
+                        JSONObject tokenParams = new JSONObject();
+                        for (Map.Entry<String, String> e : hostedUIOptions.getTokenQueryParameters().entrySet()) {
                             tokenParams.put(e.getKey(), e.getValue());
-                    }
-                    hostedUIJSON.put("TokenQueryParameters", tokenParams);
+                        }
+                        hostedUIJSON.put("TokenQueryParameters", tokenParams);
                     } catch (JSONException e1) {
                         callback.onError(new Exception("Failed to construct token query parameters", e1));
                         return;
@@ -3010,8 +3037,8 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     }
 
     private Runnable _showSignInHostedUI(final Activity callingActivity,
-                                 final SignInUIOptions signInUIOptions,
-                                 final Callback<UserStateDetails> callback) {
+                                         final SignInUIOptions signInUIOptions,
+                                         final Callback<UserStateDetails> callback) {
         return new Runnable() {
             @Override
             public void run() {
@@ -3152,8 +3179,8 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     }
 
     private Runnable _showSignInDropInUI(final Activity callingActivity,
-                                 final SignInUIOptions signInUIOptions,
-                                 final Callback<UserStateDetails> callback) {
+                                         final SignInUIOptions signInUIOptions,
+                                         final Callback<UserStateDetails> callback) {
 
         return new Runnable() {
             @Override
@@ -3192,7 +3219,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
                     Class<? extends Activity> nextActivityClass =
                             signInUIOptions.nextActivity() == null ?
-                                callingActivity.getClass() : signInUIOptions.nextActivity();
+                                    callingActivity.getClass() : signInUIOptions.nextActivity();
                     SignInUI signin = (SignInUI) getClient(mContext, SignInUI.class);
                     signin.login(callingActivity, nextActivityClass)
                             .authUIConfiguration(authUIConfigBuilder.build())
@@ -3238,7 +3265,6 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
     /**
      * Initialize the AWSMobileClient with the parameters passed in
      * {@link InitializeBuilder}
-     *
      */
     private void initializeWithBuilder(final InitializeBuilder initializeBuilder) {
         if (initializeBuilder.getAwsConfiguration() != null) {
@@ -3420,6 +3446,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
         /**
          * Constructor that intializes the InitializeBuilder
+         *
          * @deprecated Since 2.8.0 This method will be removed in the next minor version.
          * Please update to use AWSMobileClient using `initialize`.
          * Please visit https://aws-amplify.github.io for the latest Android documentation.
@@ -3518,6 +3545,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
         /**
          * Initialize the {@link AWSMobileClient} with the parameters passed in.
+         *
          * @deprecated Since 2.8.0 This method will be removed in the next minor version.
          * Please update to use AWSMobileClient using `initialize`.
          * Please visit https://aws-amplify.github.io for the latest Android documentation.
@@ -3541,6 +3569,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
         /**
          * SignInProvider class.
+         *
          * @deprecated Since 2.8.0 This method will be removed in the next minor version.
          * Please update to use AWSMobileClient using `initialize`.
          * Please visit https://aws-amplify.github.io for the latest Android documentation.
@@ -3550,6 +3579,7 @@ public final class AWSMobileClient implements AWSCredentialsProvider {
 
         /**
          * Permissions for the SignInProvider.
+         *
          * @deprecated Since 2.8.0 This method will be removed in the next minor version.
          * Please update to use AWSMobileClient using `initialize`.
          * Please visit https://aws-amplify.github.io for the latest Android documentation.
@@ -3671,7 +3701,7 @@ class AWSMobileClientCognitoIdentityProvider extends AWSAbstractCognitoIdentityP
      * An extension of the AbstractCognitoProvider that is used to communicate
      * with Cognito.
      *
-     * @param accountId the account id of the developer
+     * @param accountId      the account id of the developer
      * @param identityPoolId the identity pool id of the app/user in question
      */
     public AWSMobileClientCognitoIdentityProvider(String accountId, String identityPoolId) {
@@ -3682,13 +3712,13 @@ class AWSMobileClientCognitoIdentityProvider extends AWSAbstractCognitoIdentityP
      * An extension of the AbstractCognitoProvider that is used to communicate
      * with Cognito.
      *
-     * @param accountId the account id of the developer
-     * @param identityPoolId the identity pool id of the app/user in question
+     * @param accountId           the account id of the developer
+     * @param identityPoolId      the identity pool id of the app/user in question
      * @param clientConfiguration the configuration to apply to service clients
-     *            created
+     *                            created
      */
     public AWSMobileClientCognitoIdentityProvider(String accountId, String identityPoolId,
-                                              ClientConfiguration clientConfiguration) {
+                                                  ClientConfiguration clientConfiguration) {
         this(accountId, identityPoolId, new AmazonCognitoIdentityClient
                 (new AnonymousAWSCredentials(), clientConfiguration));
     }
@@ -3697,13 +3727,13 @@ class AWSMobileClientCognitoIdentityProvider extends AWSAbstractCognitoIdentityP
      * An extension of the AbstractCognitoProvider that is used to communicate
      * with Cognito.
      *
-     * @param accountId the account id of the developer
+     * @param accountId      the account id of the developer
      * @param identityPoolId the identity pool id of the app/user in question
-     * @param cibClient the cib client which will be used to contact the cib
-     *            back end
+     * @param cibClient      the cib client which will be used to contact the cib
+     *                       back end
      */
     public AWSMobileClientCognitoIdentityProvider(String accountId, String identityPoolId,
-                                              AmazonCognitoIdentity cibClient) {
+                                                  AmazonCognitoIdentity cibClient) {
         super(accountId, identityPoolId, cibClient);
     }
 
@@ -3717,7 +3747,7 @@ class AWSMobileClientCognitoIdentityProvider extends AWSAbstractCognitoIdentityP
      * to be the developer authenticated flow.
      *
      * @param identityId provided by user upstream
-     * @param token provided by user upstream
+     * @param token      provided by user upstream
      */
     void setDeveloperAuthenticated(final String identityId,
                                    final String token) {
@@ -3810,6 +3840,7 @@ class OAuth2Utils {
 
     /**
      * Opens the CustomTabs browser to the specified URI
+     *
      * @param uri
      */
     void navigate(Uri uri) {
